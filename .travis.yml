@@ -4,6 +4,10 @@ language: python
 python:
   - "3.7.9"
 
+#Build Environments
+os: linux
+dist: xenial
+
 # Instalação de Módulos que são necessários para a Aplicação.
 install:
   - pip install flask
@@ -14,6 +18,7 @@ script:
 
 deploy:
   provider: heroku
+  strategy: api
   api_key: $HEROKU_API_KEY
   edge: true 
   app: devopslab-augustogava
