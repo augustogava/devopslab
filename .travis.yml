@@ -8,6 +8,11 @@ python:
 os: linux
 dist: xenial
 
+before_install:
+- openssl aes-256-cbc -K $encrypted_e2c4dbf29b26_key -iv $encrypted_e2c4dbf29b26_iv
+  -in lab-devops-cloud-314722-843338b0f378.json.enc -out ../lab-devops-cloud-314722-843338b0f378.json
+  -d
+
 # Instalação de Módulos que são necessários para a Aplicação.
 install:
   - pip install flask
@@ -17,10 +22,15 @@ script:
   - python -m unittest -v test
 
 deploy:
-  provider: heroku
-  strategy: api
-  api_key: $HEROKU_API_KEY
-  edge: true 
-  app: devopslab-augustogava
-  on:
+  - provider: gae
+    strategy: api
+    api_key: $HEROKU_API_KEY
+    edge: true
+    app: devopslab-augustogava
+    on:
+      branch: main
+  - provider: gae
+    keyfile: ../lab-devops-cloud-314722-843338b0f378.json
+    project: lab-devops-cloud-314722
+    on:
       branch: main
